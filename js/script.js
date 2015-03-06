@@ -22,8 +22,8 @@ var svg = d3.select(map.getPanes().overlayPane).append("svg"),
 //The domain sets the break points for each color.
 //Feel free to put whatever colors and breakpoints here you'd like.
 var threshold = d3.scale.threshold()
-    .domain([5, 10, 15, 20])
-    .range(["#e6f2e1", "#eaddb1", "#ffd458", "#e29320", "#ce472c"]);
+    .domain([4, 8, 14, 20])
+    .range(["#edf8fb", "#bfd3e6", "#9ebcda", "#8c96c6", "#8c6bb1"]);
 
 //This will be a dictionary object we use to lookup the info for each county.
 //It's empty for now. We add our data when we load or json.
