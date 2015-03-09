@@ -1,10 +1,10 @@
 
-//Roughly the center of SE Missouri (lat/long)
-var center = [37.4053602, -90.9254912]
+//Roughly the center of Missouri (lat/long)
+var center = [38.524170, -92.557949]
 
 //Target the chart div as the container for our leaflet map
 //Set the center point and zoom level.
-var map = L.map('chart').setView(center, 8);
+var map = L.map('chart').setView(center, 7);
 
 
 // add an OpenStreetMap tile layer
@@ -23,7 +23,7 @@ var svg = d3.select(map.getPanes().overlayPane).append("svg"),
 //Feel free to put whatever colors and breakpoints here you'd like.
 var threshold = d3.scale.threshold()
     .domain([4, 8, 12, 16, 20])
-    .range(["#fee0d2", "#fcbba1", "#fb6a4a", "#ef3b2c", "#cb181d", "#99000d"]);
+    .range(["#fcbba1", "#fcbba1", "#fc9272", "#fb6a4a", "#ef3b2c", "#cb181d"]);
 
 //This will be a dictionary object we use to lookup the info for each county.
 //It's empty for now. We add our data when we load or json.
@@ -134,6 +134,10 @@ function drawMap() {
             this.stream.point(point.x, point.y);
         }
     });
+
+map.on('click', function(e) {
+    Popup(e.latlong); // e is an event object (MouseEvent in this case)
+});
 
 }
 
