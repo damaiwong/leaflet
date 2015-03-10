@@ -95,8 +95,6 @@ function drawMap() {
             }
         })
 
-
-
         //When you set up you're tooltip, you can access the data like I've done here
         //This throws the data object for each county to the console window
         feature.on("click", function(d) {
@@ -104,6 +102,20 @@ function drawMap() {
             console.log(thisCounty);
         });
 
+feature.on("mouseover", function(d) {
+            var thisCounty = theData[d.properties.name];
+            console.log(thisCounty);
+
+            $(".info").html(
+                "<h3 class='county-name'>"+thisCounty.county+" County"+"</h3>"+
+                "<p class='cancer-rate'>Cervical cancer rate: "+thisCounty.cancer_rate+"%"+"</p>"+
+                "<p class='death-rate'>Death from cervical cancer rate: "+thisCounty.death_rate+"%"+"</p>"
+            );
+
+        })
+        .on("mouseout", function() {
+            $(".info").html("");
+        })
 
 
         //The next block of code repositions the geojson objects on the map
@@ -135,8 +147,13 @@ function drawMap() {
         }
     });
 
+
 map.on('click', function(e) {
-    Popup(e.latlong); // e is an event object (MouseEvent in this case)
+    // Popup(e.latlong); // e is an event object (MouseEvent in this case)
+
+    
+   
+
 });
 
 }
