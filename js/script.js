@@ -89,7 +89,7 @@ function drawMap() {
         .attr("opacity", function(d) {
             var county = d.properties.name;
             if (theData[d.properties.name]) {
-                return 1;
+                return .8;
             } else {
                 return 0;
             }
@@ -139,6 +139,12 @@ feature.on("mouseover", function(d) {
 
             feature.attr("d", path);
         }
+
+        legend = svg.append("g")
+  .attr("class","legend")
+  .attr("transform","translate(50,30)")
+  .style("font-size","12px")
+  .call(d3.legend)
 
         // Use Leaflet to implement a D3 geometric transformation.
         function projectPoint(x, y) {
