@@ -1,4 +1,41 @@
+.key .lbl {
+	text-align: center;
+}
 
+.key .value {
+	float: left;
+	width: 100px;
+}
+
+.key .color {
+	width: 100%;
+	height: 8px;
+	background-color: #CCC;
+}
+
+.value.one .color {
+	background-color: #fcbba1;
+}
+
+.value.two .color {
+	background-color: #fc9272;
+}
+
+.value.three .color {
+	background-color: #fb6a4a;
+}
+
+.value.four .color {
+	background-color: #ef3b2c;
+}
+
+.value.five .color {
+	background-color: #cb181d;
+}
+
+.value.six .color {
+	background-color: #a50f15;
+}
 
 
 .chart {
