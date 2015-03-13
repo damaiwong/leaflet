@@ -4,13 +4,16 @@
 
 .key .value {
 	float: left;
-	width: 100px;
+	width: 90px;
 }
 
 .key .color {
 	width: 100%;
 	height: 8px;
 	background-color: #CCC;
+}
+.key .opacity {
+ opacity: 0.4;
 }
 
 .value.one .color {
