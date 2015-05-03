@@ -4,7 +4,7 @@ var center = [38.524170, -92.557949]
 
 //Target the chart div as the container for our leaflet map
 //Set the center point and zoom level.
-var map = L.map('chart').setView(center, 7);
+var map = L.map('chart',{scrollWheelZoom:false}).setView(center, 7);
 
 
 // add an OpenStreetMap tile layer
@@ -22,7 +22,7 @@ var svg = d3.select(map.getPanes().overlayPane).append("svg"),
 //The domain sets the break points for each color.
 //Feel free to put whatever colors and breakpoints here you'd like.
 var threshold = d3.scale.threshold()
-    .domain([4, 8, 12, 16, 20])
+    .domain([2000, 4000, 6000, 8000, 10000])
     .range(["#fcbba1", "#fc9272", "#fb6a4a", "#ef3b2c", "#cb181d", "#a50f15"]);
 
 //This will be a dictionary object we use to lookup the info for each county.
@@ -30,7 +30,18 @@ var threshold = d3.scale.threshold()
 var theData = {};
 
 $(document).ready(function(d) {
-    $.getJSON("js/cancer.json", function(data) {
+    // $.getJSON("js/cancer.json", function(data) {
+        
+    //     //Each row in the data is a county.
+    //     //So we append an object to theData with the county name
+    //     //And put the whole row in that object
+    //     //So each county's data is accessible with the construction, theData[county name here];
+    //     $.each(data, function(i, item) {
+    //         theData[item.county] = item;
+    //         //console.log(item);
+    //     })
+
+        $.getJSON("js/speeding.json", function(data) {
         
         //Each row in the data is a county.
         //So we append an object to theData with the county name
@@ -38,8 +49,9 @@ $(document).ready(function(d) {
         //So each county's data is accessible with the construction, theData[county name here];
         $.each(data, function(i, item) {
             theData[item.county] = item;
+            console.log(item);
         })
-
+        console.log(theData);
         drawMap();
     })
 });
@@ -49,7 +61,7 @@ $(document).ready(function(d) {
 
 
 function drawMap() {
-
+    console.log('is the map being drawn');
     //Load the Missouri County GeoJson
     d3.json("js/missouri-counties.json", function(collection) {
 
@@ -75,47 +87,51 @@ function drawMap() {
         //The opacity property is used to hide the counties for which we have no data.
         feature.attr("fill", function(d) {
             var county = d.properties.name;
-            if (theData[d.properties.name]) {
+            console.log(county);
+            if (theData[d.properties.name + ' County']) {
                 
-                var cancer = theData[county].cancer_rate;
-                var death = theData[county].death_rate;
-                return threshold(cancer);
+                var tickets = theData[county + ' County'].tickets;
+                console.log(tickets);
+                //var death = theData[county].death_rate;
+                return threshold(tickets);
 
                 //return "#999"
             } else {
+                console.log('does this run');
                 return "#CCC";
             }
         })
         .attr("opacity", function(d) {
             var county = d.properties.name;
-            if (theData[d.properties.name]) {
-                return .8;
+            if (theData[d.properties.name + ' County']) {
+                console.log('opacity = .8');
+                return .7;
             } else {
+                console.log('zero opacity?');
                 return 0;
             }
-        })
+         })
 
         //When you set up you're tooltip, you can access the data like I've done here
         //This throws the data object for each county to the console window
         feature.on("click", function(d) {
-            var thisCounty = theData[d.properties.name];
+            var thisCounty = theData[d.properties.name + ' County'].county;
             console.log(thisCounty);
         });
 
 feature.on("mouseover", function(d) {
-            var thisCounty = theData[d.properties.name];
-            console.log(thisCounty);
+            $(".info").html("");
+            var thisCounty = theData[d.properties.name+ ' County'];
 
             $(".info").html(
-                "<h3 class='county-name'>"+thisCounty.county+" County"+"</h3>"+
-                "<p class='cancer-rate'>Cervical cancer rate: "+thisCounty.cancer_rate+"%"+"</p>"+
-                "<p class='death-rate'>Death from cervical cancer rate: "+thisCounty.death_rate+"%"+"</p>"
+                "<h3 class='county-name'>"+thisCounty.county+"</h3>"+
+                "<p class='cancer-rate'><h3>"+thisCounty.tickets+"</h3> total speeding tickets since 2012</p>"
             );
 
         })
-        .on("mouseout", function() {
-            $(".info").html("");
-        })
+        // .on("mouseout", function() {
+        //     $(".info").html("");
+        // })
 
 
         //The next block of code repositions the geojson objects on the map
